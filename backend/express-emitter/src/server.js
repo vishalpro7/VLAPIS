@@ -22,6 +22,13 @@ app.use((req, res) => {
     });
 });
 
+app.use((req, res) => {
+    res.status(500).json({
+        success : false, 
+        message : "Simulated internal server error"
+    });
+});
+
 app.listen(PORT, () => {
     console.log(`VLAPIS Express Emitter running on port ${PORT}`);
 });
