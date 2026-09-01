@@ -41,5 +41,12 @@ router.get("/health", (req, res) => {
     });
 });
 
+router.get("/simulation/error", (req, res) => {
+  res.status(500).json({
+    success: false,
+    message: "Simulated internal server error"
+  });
+});
+
 module.exports = router;
 
