@@ -48,5 +48,12 @@ router.get("/simulation/error", (req, res) => {
   });
 });
 
+router.get("/simulator/slow", (req, res) => {
+    res.status(200).json({
+        success: true, 
+        message : "Slow response simulation"
+    });
+});
+
 module.exports = router;
 
