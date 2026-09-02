@@ -1,0 +1,16 @@
+const Redis = require("ioredis");
+
+const redis = new Redis({
+    host : process.env.REDIS_HOST || "localhost",
+    port : Number(process.env.REDIS_PORT) || 6379
+});
+
+redis.on("connect", () => {
+    console.log("VLAPIS connected to the Redis")
+});
+
+redis.on("error", (error) => {
+    console.error("Redis Connection error:", error.message);
+});
+
+module.exports = redis;
