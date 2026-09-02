@@ -1,10 +1,13 @@
 const { timeStamp } = require("console");
 const crypto = require("crypto");
+const redis = require("../config/redis");
+
+const STREAM_NAME = "vlapis:logs";
 
 function requestLogger(req, res, next) {
     const startTime = process.hrtime.bigint();
 
-    res.on("finish", () => {
+    res.on("finish", async () => {
         const endTime = process.hrtime.bigint();
 
         const responseTimeMs = 
@@ -22,6 +25,22 @@ function requestLogger(req, res, next) {
         };
 
         console.log(JSON.stringify(log));
+
+        try {
+            await redis.xadd(
+                STREAM_NAME, 
+                "*", 
+                "data", 
+                JSON.stringify(log)
+            );
+            
+            console.log("[REDIS] Log publised")
+        } catch (error) {
+            console.error(
+                "[REDIS] Failed to publish log:",
+                error.message
+            );
+        } 
     });
 
     next();
